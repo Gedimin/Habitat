@@ -1,0 +1,17 @@
+#!/bin/bash
+
+status="$(wget -qO - "{{svc.me.sys.hostname}}:{{svc.me.cfg.port}}/_cat/health")"
+color="$(echo "$status" | awk '{print $4}')"
+
+case $color in
+    "green")
+      rc=0 ;;
+    "yellow")
+      rc=1 ;;
+    "red")
+      rc=2 ;;
+    *)
+      rc=3 ;;
+esac
+
+exit $rc

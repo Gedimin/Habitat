@@ -1,0 +1,25 @@
+#!/bin/bash
+
+exec 2>&1
+
+. "{{pkg.svc_config_path}}/hook-helper.sh"
+
+# This helps to restart service when it needed
+checksum_restart_hook
+
+# {{#if cfg.runtime.es_startup_sleep_time ~}}
+export ES_STARTUP_SLEEP_TIME="{{cfg.runtime.es_startup_sleep_time}}"
+# {{/if ~}}
+
+# {{#if cfg.runtime.max_locked_memory ~}}
+ulimit -l "{{cfg.runtime.max_locked_memory}}"
+# {{/if ~}}
+# {{#if cfg.runtime.max_open_files ~}}
+ulimit -n "{{cfg.runtime.max_open_files}}"
+# {{/if ~}}
+
+export ES_HOME="{{pkg.path}}/es"
+export ES_TMPDIR="{{pkg.path}}/es"
+export ES_JVM_OPTIONS="{{pkg.svc_config_path}}/jvm.options"
+export ES_PATH_CONF="{{pkg.svc_config_path}}"
+exec elasticsearch

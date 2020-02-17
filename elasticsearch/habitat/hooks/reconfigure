@@ -1,0 +1,15 @@
+#!/bin/bash
+
+. "{{pkg.svc_config_path}}/hook-helper.sh"
+
+elasticsearch_pid=$(elasticsearch_pid)
+
+if check_restart_hook; then
+    echo "Restart is required."
+    kill "$elasticsearch_pid"
+    sleep 1
+    exit 0
+else
+    checksum_restart_hook
+    echo "Restart is not required. Number of hosts has been changed. Configuration has beed reloaded."
+fi
