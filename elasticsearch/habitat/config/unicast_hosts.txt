@@ -1,0 +1,3 @@
+{{#each svc.members as |member| ~}}
+{{member.sys.hostname}}
+{{/each ~}}
